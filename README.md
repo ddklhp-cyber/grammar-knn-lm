@@ -1,4 +1,4 @@
-# Grammar-kNN-LM
+# Grammar-kNN-LLM
 
 **Separating Grammar from Knowledge in Tiny Language Models**
 
