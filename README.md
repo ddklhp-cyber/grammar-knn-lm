@@ -9,9 +9,9 @@
 
 Large language models use billions of parameters to memorize both grammar and facts together. This is wasteful — grammar rules are finite (~600 connector types cover all English), while facts are infinite and change daily.
 
-**Grammar-kNN-LM** is a 530K-parameter language model that learns only grammar. All factual knowledge lives in an external datastore that can be updated instantly without retraining.
+**Grammar-kNN-LLM** is a 530K-parameter language model that learns only grammar. All factual knowledge lives in an external datastore that can be updated instantly without retraining.
 
-| | Standard LLM | Grammar-kNN-LM |
+| | Standard LLM | Grammar-kNN-LLM |
 |--|--|--|
 | Parameters | Billions | **530K** |
 | Knowledge storage | In weights (frozen) | External datastore (updatable) |
@@ -56,12 +56,12 @@ User Query
 
 | Project | Approach | Limitation |
 |---------|----------|-----------|
-| **kNN-LM** (Facebook, 2020) | Large LM + datastore | Needs billions of params for meaningful hidden states |
+| **kNN-LLM** (Facebook, 2020) | Large LM + datastore | Needs billions of params for meaningful hidden states |
 | **RETRO** (DeepMind, 2022) | Retrieval chunks fed to transformer | Model still 7B+ params |
 | **RAG** (Facebook, 2020) | Retrieve docs → generate answer | Generator is a full LLM, no grammar constraints |
 | **Atlas** (Meta, 2022) | Small model + retrieval | 11B params — still large |
 | **Link Grammar** (CMU, 1991) | Rule-based parser | No generation capability |
-| **Grammar-kNN-LM (ours)** | **530K params + grammar rules + kNN** | — |
+| **Grammar-kNN-LLM (ours)** | **530K params + grammar rules + kNN** | — |
 
 **Our contributions:**
 
@@ -71,7 +71,7 @@ User Query
 
 3. **Extreme efficiency** — 1000x smaller than "small" models in literature. Works because grammar is handled by rules, not learned from scratch.
 
-4. **Zero-cost knowledge updates** — kNN-LM needs billions of params for good hidden states. Ours works at 530K because grammar embeddings make hidden states meaningful at tiny scale.
+4. **Zero-cost knowledge updates** — kNN-LLM needs billions of params for good hidden states. Ours works at 530K because grammar embeddings make hidden states meaningful at tiny scale.
 
 5. **No hallucination by design** — Output only contains words from retrieved documents.
 
@@ -141,7 +141,7 @@ Word order isn't perfect (limited by 530K params and small datastore). Grammar s
 ## Project Structure
 
 ```
-grammar-knn-lm/
+grammar-knn-llm/
 ├── model/                        # Core model code
 │   ├── transformer.py            # 6-layer transformer, GQA attention, 530K params
 │   ├── tokenizer.py              # Word-level tokenizer grouped by grammar category
@@ -173,8 +173,8 @@ pip install torch nltk
 
 ```bash
 # Clone
-git clone https://github.com/YOUR_USERNAME/grammar-knn-lm.git
-cd grammar-knn-lm
+git clone https://github.com/YOUR_USERNAME/grammar-knn-llm.git
+cd grammar-knn-llm
 
 # Build word-level grammar rules (downloads CMU link-grammar, ~50MB)
 python scripts/setup_data.py
@@ -221,7 +221,7 @@ python -m training.train_grammar --resume --steps 50000
 
 ## Related Work
 
-- **kNN-LM** — Khandelwal et al., 2020. *Generalization through Memorization: Nearest Neighbor Language Models*
+- **kNN-LLM** — Khandelwal et al., 2020. *Generalization through Memorization: Nearest Neighbor Language Models*
 - **RETRO** — Borgeaud et al., 2022. *Improving Language Models by Retrieving from Trillions of Tokens*
 - **Link Grammar** — Sleator & Temperley, 1991. *Parsing English with a Link Grammar*
 - **Atlas** — Izacard et al., 2022. *Few-shot Learning with Retrieval Augmented Language Models*
@@ -230,8 +230,8 @@ python -m training.train_grammar --resume --steps 50000
 ## Citation
 
 ```bibtex
-@misc{grammar-knn-lm-2026,
-  title={Grammar-kNN-LM: Separating Grammar from Knowledge in Tiny Language Models},
+@misc{grammar-knn-llm-2026,
+  title={Grammar-kNN-LLM: Separating Grammar from Knowledge in Tiny Language Models},
   author={},
   year={2026},
   url={https://github.com/}
